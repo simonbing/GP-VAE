@@ -333,7 +333,8 @@ class HI_VAE(VAE):
 
 
 class GP_VAE(HI_VAE):
-    def __init__(self, *args, kernel="cauchy", sigma=1., length_scale=1.0, kernel_scales=1, **kwargs):
+    def __init__(self, *args, kernel="cauchy", sigma=1., length_scale=1.0,
+                 hurst_param=0.5, kernel_scales=1, **kwargs):
         """ Proposed GP-VAE model with Gaussian Process prior
             :param kernel: Gaussial Process kernel ["cauchy", "diffusion", "rbf", "matern"]
             :param sigma: scale parameter for a kernel function
@@ -344,6 +345,7 @@ class GP_VAE(HI_VAE):
         self.kernel = kernel
         self.sigma = sigma
         self.length_scale = length_scale
+        self.hurst_param = hurst_param
         self.kernel_scales = kernel_scales
 
         if isinstance(self.encoder, JointEncoder):
@@ -373,6 +375,10 @@ class GP_VAE(HI_VAE):
                     kernel_matrices.append(matern_kernel(self.time_length, self.length_scale / 2**i))
                 elif self.kernel == "cauchy":
                     kernel_matrices.append(cauchy_kernel(self.time_length, self.sigma, self.length_scale / 2**i))
+                elif self.kernel == "fbm":  # fractional Brownian motion kernel
+                    kernel_matrices.append(fbm_kernel(self.time_length, self.hurst_param))
+                elif self.kernel == "bb": # Brownian bridge kernel
+                    kernel_matrices.append(bb_kernel(self.time_length))
 
             # Combine kernel matrices for each latent dimension
             tiled_matrices = []

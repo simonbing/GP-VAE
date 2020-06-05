@@ -62,6 +62,7 @@ flags.DEFINE_list('decoder_sizes', [256, 256], 'Layer sizes of the decoder')
 flags.DEFINE_integer('window_size', 24, 'Window size for the inference CNN: Ignored if model_type is not gp-vae')
 flags.DEFINE_float('sigma', 1.005, 'Sigma value for the GP prior: Ignored if model_type is not gp-vae')
 flags.DEFINE_float('length_scale', 7.0, 'Length scale value for the GP prior: Ignored if model_type is not gp-vae')
+flags.DEFINE_float('hurst_param', 0.5, 'Hurst parameter for fbm kernel, must be in [0, 1]. Ignored if kernel is not fbm')
 flags.DEFINE_float('beta', 0.2, 'Factor to weigh the KL term (similar to beta-VAE)')
 flags.DEFINE_integer('num_epochs', 40, 'Number of training epochs')
 
@@ -85,7 +86,7 @@ flags.DEFINE_integer('batch_size', 64, 'Batch size for training')
 flags.DEFINE_integer('M', 1, 'Number of samples for ELBO estimation')
 flags.DEFINE_integer('K', 1, 'Number of importance sampling weights')
 
-flags.DEFINE_enum('kernel', 'cauchy', ['rbf', 'diffusion', 'matern', 'cauchy'], 'Kernel to be used for the GP prior: Ignored if model_type is not (m)gp-vae')
+flags.DEFINE_enum('kernel', 'cauchy', ['rbf', 'diffusion', 'matern', 'cauchy', 'fbm', 'bb'], 'Kernel to be used for the GP prior: Ignored if model_type is not (m)gp-vae')
 flags.DEFINE_integer('kernel_scales', 1, 'Number of different length scales sigma for the GP prior: Ignored if model_type is not gp-vae')
 
 
@@ -261,9 +262,10 @@ def main(argv):
                        encoder_sizes=FLAGS.encoder_sizes, encoder=encoder,
                        decoder_sizes=FLAGS.decoder_sizes, decoder=decoder,
                        kernel=FLAGS.kernel, sigma=FLAGS.sigma,
-                       length_scale=FLAGS.length_scale, kernel_scales = FLAGS.kernel_scales,
-                       image_preprocessor=image_preprocessor, window_size=FLAGS.window_size,
-                       beta=FLAGS.beta, M=FLAGS.M, K=FLAGS.K, data_type=FLAGS.data_type)
+                       length_scale=FLAGS.length_scale, hurst_param=FLAGS.hurst_param,
+                       kernel_scales = FLAGS.kernel_scales,image_preprocessor=image_preprocessor,
+                       window_size=FLAGS.window_size, beta=FLAGS.beta, M=FLAGS.M,
+                       K=FLAGS.K, data_type=FLAGS.data_type)
     else:
         raise ValueError("Model type must be one of ['vae', 'hi-vae', 'gp-vae']")
 
