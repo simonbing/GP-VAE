@@ -54,9 +54,9 @@ def fbm_kernel(T, H):
     xs = tf.range(T, dtype=tf.float32)
     xs_in = tf.expand_dims(xs, 0)
     xs_out = tf.expand_dims(xs, 1)
-    kernel_matrix = xs_in ** (2*H) + xs_out ** (2*H) + \
+    kernel_matrix = xs_in ** (2*H) + xs_out ** (2*H) - \
                     (tf.math.abs(tf.math.subtract(xs_in, xs_out))) ** (2*H)
-    kernel_matrix = 0.5 * kernel_matrix
+    kernel_matrix = 0.5 * kernel_matrix + 1e-8 * tf.eye(T)  # kernel matrix is PSD, adding jitter
     return kernel_matrix
 
 
@@ -66,4 +66,5 @@ def bb_kernel(T):
     xs_in = tf.expand_dims(xs, 0)
     xs_out = tf.expand_dims(xs, 1)
     kernel_matrix = tf.math.minimum(xs_in, xs_out) - tf.math.multiply(xs_in, xs_out) / T
+    kernel_matrix = kernel_matrix + 1e-8 * tf.eye(T)  # kernel matrix is PSD, adding jitter
     return kernel_matrix
