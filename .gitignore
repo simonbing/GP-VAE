@@ -116,9 +116,33 @@ lsf.*
 .DS_Store
 
 # Baselines
+baselines/adagvae
+baselines/annealedvae
+baselines/betavae
 baselines/betatcvae
 baselines/factorvae
 baselines/dipvae_i
+baselines/dipvae_ii
+
+!/baselines/adagvae/train.py
+!/baselines/adagvae/adagvae_dci.gin
+!/baselines/adagvae/adagvae_postprocess.gin
+!/baselines/adagvae/adagvae_train.gin
+
+!/baselines/annealedvae/train.py
+!/baselines/annealedvae/annealedvae_dci.gin
+!/baselines/annealedvae/annealedvae_postprocess.gin
+!/baselines/annealedvae/annealedvae_train.gin
+
+!/baselines/annealedvae/train.py
+!/baselines/annealedvae/annealedvae_dci.gin
+!/baselines/annealedvae/annealedvae_postprocess.gin
+!/baselines/annealedvae/annealedvae_train.gin
+
+!/baselines/betavae/train.py
+!/baselines/betavae/betavae_dci.gin
+!/baselines/betavae/betavae_postprocess.gin
+!/baselines/betavae/betavae_train.gin
 
 !/baselines/betatcvae/train.py
 !/baselines/betatcvae/betatcvae_dci.gin
@@ -134,3 +158,8 @@ baselines/dipvae_i
 !/baselines/dipvae_i/dipvae_i_dci.gin
 !/baselines/dipvae_i/dipvae_i_postprocess.gin
 !/baselines/dipvae_i/dipvae_i_train.gin
+
+!/baselines/dipvae_ii/train.py
+!/baselines/dipvae_ii/dipvae_ii_dci.gin
+!/baselines/dipvae_ii/dipvae_ii_postprocess.gin
+!/baselines/dipvae_ii/dipvae_ii_train.gin
